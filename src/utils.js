@@ -87,3 +87,5 @@ export function setErrors(errors, fun, error) {
     errors: newErrors
   })
 }
+
+export const objectLen = (obj) => Object.keys(obj).length 

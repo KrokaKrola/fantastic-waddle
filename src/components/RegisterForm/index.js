@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { useFormik } from 'formik';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Formik, Form } from 'formik';
+import { Button } from 'react-bootstrap';
 import {
   createUserWithEmailAndPassword,
   setErrors,
-  loadingStyle
+  loadingStyle,
+  objectLen
 } from './../../utils';
 import GoogleAuthButton from './GoogleAuthButton';
 import { useAppState } from '../../app-state';
+import * as Yup from 'yup';
+import Field from '../utilsComponents/Field';
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
@@ -29,146 +32,92 @@ const RegisterForm = () => {
     }
   };
 
-  const validate = values => {
-    const errors = {};
-
-    if (!values.displayName) {
-      errors.displayName = 'Required';
-    } else if (values.displayName.length > 15) {
-      errors.displayName = 'Must be 15 characters or less';
-    }
-
-    if (!values.email) {
-      errors.email = 'Required';
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = 'Invalid email address';
-    }
-
-    if (!values.photoURL) {
-      errors.photoURL = 'Required';
-    } else if (
-      !/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(
-        values.photoURL
-      )
-    ) {
-      errors.photoURL = 'Invalid URL address';
-    }
-
-    if (!values.password) {
-      errors.password = 'Required';
-    } else if (values.password.length < 6) {
-      errors.password = 'Must be 6 characters or more';
-    }
-
-    if (values.repeatPassword !== values.password) {
-      errors.repeatPassword = 'Password and repeat password must be equal';
-    }
-
-    return errors;
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      displayName: '',
-      email: '',
-      photoURL: 'https://placekitten.com/200/200',
-      password: '',
-      repeatPassword: ''
-    },
-    validate,
-    onSubmit: values => {
-      emailPaswordRegisterHandler(values);
-    }
-  });
-
   return (
-    <form style={loading ? loadingStyle : {}} onSubmit={formik.handleSubmit}>
-      <div>
-        <label htmlFor="displayName">Name</label>
-        <InputGroup>
-          <FormControl
-            id="displayName"
+    <Formik
+      initialValues={{
+        displayName: '',
+        email: '',
+        photoURL: 'https://placekitten.com/200/200',
+        password: '',
+        repeatPassword: ''
+      }}
+      validationSchema={Yup.object({
+        displayName: Yup.string()
+          .max(15, 'Must be 15 characters or less')
+          .min(2, 'Must be at least 2 characters')
+          .required('This field is required'),
+        email: Yup.string()
+          .email('Invalid email address')
+          .required('This field is required'),
+        photoURL: Yup.string()
+          .url('Invalid URL address')
+          .required('This field is required'),
+        password: Yup.string()
+          .min(6, 'Must be at least 6 characters')
+          .required('This field is required'),
+        repeatPassword: Yup.string().oneOf(
+          [Yup.ref('password'), null],
+          "Passwords don't match"
+        )
+      })}
+      onSubmit={(values, { setSubmitting }) => {
+        // emailPaswordRegisterHandler(values);
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
+      }}
+    >
+      {formik => (
+        <Form style={loading ? loadingStyle : {}}>
+          <Field
+            label="Name"
             name="displayName"
-            aria-label="User name"
             type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.displayName}
+            placeholder="User name"
           />
-        </InputGroup>
-        {formik.touched.displayName && formik.errors.displayName ? (
-          <span>{formik.errors.displayName}</span>
-        ) : null}
-      </div>
-      <div>
-        <label htmlFor="email">Email</label>
-        <InputGroup>
-          <FormControl
-            id="email"
+          <Field
+            label="Email"
             name="email"
-            aria-label="User email"
             type="email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
+            placeholder="User email"
           />
-        </InputGroup>
-        {formik.touched.email && formik.errors.email ? <span>{formik.errors.email}</span> : null}
-      </div>
-      <div>
-        <label htmlFor="photoURL">Avatar URL</label>
-        <InputGroup>
-          <FormControl
-            id="photoURL"
+          <Field
+            label="Avatar URL"
             name="photoURL"
-            aria-label="Avatar URL"
             type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.photoURL}
+            placeholder="Avatar URL"
           />
-        </InputGroup>
-        {formik.touched.photoURL && formik.errors.photoURL ? <span>{formik.errors.photoURL}</span> : null}
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <InputGroup>
-          <FormControl
-            id="password"
+          <Field
+            label="Password"
             name="password"
-            aria-label="Password"
             type="password"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
+            placeholder="Password"
           />
-        </InputGroup>
-        {formik.touched.password && formik.errors.password ? <span>{formik.errors.password}</span> : null}
-      </div>
-      <div>
-        <label htmlFor="password">Repeat Password</label>
-        <InputGroup>
-          <FormControl
-            id="repeatPassword"
+          <Field
+            label="Repeat Password"
             name="repeatPassword"
-            aria-label="Repeat Password"
             type="password"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.repeatPassword}
+            placeholder="Repeat Password"
           />
-        </InputGroup>
-        {formik.touched.repeatPassword && formik.errors.repeatPassword && (
-          <span>{formik.errors.repeatPassword}</span>
-        )}
-      </div>
-      <GoogleAuthButton setLoading={setLoading} />
-      <Button type="submit" variant="primary">
-        Register
-      </Button>
-    </form>
+
+          <GoogleAuthButton setLoading={setLoading} />
+          <Button
+            disabled={
+              objectLen(formik.errors)
+                ? true
+                : formik.isSubmitting
+                ? true
+                : false
+            }
+            type="submit"
+            variant="primary"
+          >
+            Register
+          </Button>
+        </Form>
+      )}
+    </Formik>
   );
 };
 
