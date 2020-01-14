@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
-import { Button, Form } from 'antd';
+import { Button, Form, Icon } from 'antd';
+import * as Yup from 'yup';
+import GoogleAuthButton from './GoogleAuthButton';
+import Field from '../utilsComponents/Field';
 import {
   createUserWithEmailAndPassword,
   setErrors,
-  loadingStyle,
   objectLen
 } from './../../utils';
-import GoogleAuthButton from './GoogleAuthButton';
-import * as Yup from 'yup';
-import Field from '../utilsComponents/Field';
 import {
   maxError,
   minError,
@@ -19,11 +18,9 @@ import {
   passwordMatchError
 } from '../../errorMessages';
 
-const RegisterForm = () => {
-  const [loading, setLoading] = useState(false);
-
+const RegisterForm = ({ setSubmiting }) => {
   const emailPaswordRegisterHandler = async values => {
-    setLoading(true);
+    setSubmiting(true);
     const { displayName, email, password } = values;
     const data = {
       displayName,
@@ -32,8 +29,9 @@ const RegisterForm = () => {
     };
     try {
       await createUserWithEmailAndPassword(data);
+      sessionStorage.clear();
     } catch (error) {
-      setLoading(false);
+      setSubmiting(false);
       setErrors(error);
     }
   };
@@ -41,10 +39,12 @@ const RegisterForm = () => {
   return (
     <Formik
       initialValues={{
-        displayName: '',
-        email: '',
-        photoURL: 'https://placekitten.com/200/200',
-        password: '',
+        displayName: sessionStorage.getItem('displayName'),
+        email: sessionStorage.getItem('email'),
+        photoURL:
+          sessionStorage.getItem('photoURL') ||
+          'https://placekitten.com/200/200',
+        password: sessionStorage.getItem('password'),
         repeatPassword: ''
       }}
       validationSchema={Yup.object({
@@ -71,16 +71,14 @@ const RegisterForm = () => {
       }}
     >
       {formik => (
-        <Form
-          onSubmit={formik.handleSubmit}
-          style={loading ? loadingStyle : {}}
-        >
+        <Form onSubmit={formik.handleSubmit} layout={'horizontal'}>
           <Field
             label="Name"
             name="displayName"
             id="displayName"
             type="text"
             placeholder="User name"
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
           />
           <Field
             label="Email"
@@ -88,6 +86,7 @@ const RegisterForm = () => {
             id="email"
             type="email"
             placeholder="User email"
+            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
           />
           <Field
             label="Avatar URL"
@@ -95,6 +94,7 @@ const RegisterForm = () => {
             id="photoURL"
             type="text"
             placeholder="Avatar URL"
+            prefix={<Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />}
           />
           <Field
             label="Password"
@@ -102,6 +102,7 @@ const RegisterForm = () => {
             id="password"
             type="password"
             placeholder="Password"
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
           />
           <Field
             label="Repeat Password"
@@ -109,17 +110,12 @@ const RegisterForm = () => {
             id="repeatPassword"
             type="password"
             placeholder="Repeat Password"
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
           />
-          <div style={{ marginTop: 40 }}>
-            <GoogleAuthButton setLoading={setLoading} />
+          <div>
+            <GoogleAuthButton setLoading={setSubmiting} />
             <Button
-              disabled={
-                formik.isSubmitting
-                  ? true
-                  : objectLen(formik.errors)
-                  ? true
-                  : false
-              }
+              disabled={objectLen(formik.errors) ? true : false}
               htmlType="submit"
               type="primary"
             >
