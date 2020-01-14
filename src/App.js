@@ -4,7 +4,6 @@ import AppStateProvider from "./app-state";
 import useAuth from "./useAuth";
 import LoggedOut from "./LoggedOut";
 import LoggedIn from "./LoggedIn";
-import ToastComponent from "./ToastComponent";
 
 function App() {
   const { auth, authAttempted } = useAuth();
@@ -12,7 +11,6 @@ function App() {
   return (
     <div>
       {auth ? <LoggedIn /> : <LoggedOut />}
-      <ToastComponent />
     </div>
   );
 }

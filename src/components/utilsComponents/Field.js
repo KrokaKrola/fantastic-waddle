@@ -1,36 +1,17 @@
 import React from 'react';
 import { useField } from 'formik';
-import { FormControl } from 'react-bootstrap';
-import './Field.css';
-// import posed from 'react-pose';
-
-// const ShakePose = posed.div({
-//   shake: {
-//     applyAtEnd: { x: 0 },
-//     applyAtStart: { x: -10 },
-//     x: 0,
-//     transition: {
-//       type: 'spring',
-//       stiffness: 1000,
-//       damping: 10,
-//       duration: 4
-//     }
-//   }
-// });
+import { Input, Form } from 'antd';
 
 export default function Field({ label, ...props }) {
   const [field, meta] = useField(props);
+  const errorState = meta.touched && meta.error;
   return (
-    <>
+    <Form.Item
+      help={errorState ? meta.error : ''}
+      validateStatus={errorState ? 'error' : 'validating'}
+    >
       <label htmlFor={props.id || props.name}>{label}</label>
-      <FormControl
-        className={`textInput ${meta.error ? 'textInput--error' : ''}`}
-        {...field}
-        {...props}
-      />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
-    </>
+      <Input size="large" {...field} {...props} />
+    </Form.Item>
   );
 }

@@ -1,8 +1,7 @@
 export const initialState = {
   authAttempted: false,
   auth: null,
-  user: null,
-  errors: []
+  user: null
 };
 
 export const appStateReducer = (state, action) => {
@@ -17,11 +16,6 @@ export const appStateReducer = (state, action) => {
       return {
         ...state,
         user: action.user
-      };
-    case "CHANGE_ERRORS_STATE":
-      return {
-        ...state,
-        errors: action.errors
       };
     default:
       return state;

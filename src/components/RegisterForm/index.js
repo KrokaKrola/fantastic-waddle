@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
-import { Button } from 'react-bootstrap';
+import { Formik } from 'formik';
+import { Button, Form } from 'antd';
 import {
   createUserWithEmailAndPassword,
   setErrors,
@@ -8,13 +8,19 @@ import {
   objectLen
 } from './../../utils';
 import GoogleAuthButton from './GoogleAuthButton';
-import { useAppState } from '../../app-state';
 import * as Yup from 'yup';
 import Field from '../utilsComponents/Field';
+import {
+  maxError,
+  minError,
+  required,
+  emailError,
+  urlError,
+  passwordMatchError
+} from '../../errorMessages';
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
-  const [{ errors }, dispatch] = useAppState();
 
   const emailPaswordRegisterHandler = async values => {
     setLoading(true);
@@ -28,7 +34,7 @@ const RegisterForm = () => {
       await createUserWithEmailAndPassword(data);
     } catch (error) {
       setLoading(false);
-      setErrors(errors, dispatch, error);
+      setErrors(error);
     }
   };
 
@@ -43,78 +49,83 @@ const RegisterForm = () => {
       }}
       validationSchema={Yup.object({
         displayName: Yup.string()
-          .max(15, 'Must be 15 characters or less')
-          .min(2, 'Must be at least 2 characters')
-          .required('This field is required'),
+          .max(15, maxError(15))
+          .min(2, minError(2))
+          .required(required),
         email: Yup.string()
-          .email('Invalid email address')
-          .required('This field is required'),
+          .email(emailError)
+          .required(required),
         photoURL: Yup.string()
-          .url('Invalid URL address')
-          .required('This field is required'),
+          .url(urlError)
+          .required(required),
         password: Yup.string()
-          .min(6, 'Must be at least 6 characters')
-          .required('This field is required'),
-        repeatPassword: Yup.string().oneOf(
-          [Yup.ref('password'), null],
-          "Passwords don't match"
-        )
+          .min(6, minError(6))
+          .required(required),
+        repeatPassword: Yup.string()
+          .oneOf([Yup.ref('password'), null], passwordMatchError)
+          .required(required)
       })}
       onSubmit={(values, { setSubmitting }) => {
-        // emailPaswordRegisterHandler(values);
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        emailPaswordRegisterHandler(values);
+        setSubmitting(false);
       }}
     >
       {formik => (
-        <Form style={loading ? loadingStyle : {}}>
+        <Form
+          onSubmit={formik.handleSubmit}
+          style={loading ? loadingStyle : {}}
+        >
           <Field
             label="Name"
             name="displayName"
+            id="displayName"
             type="text"
             placeholder="User name"
           />
           <Field
             label="Email"
             name="email"
+            id="email"
             type="email"
             placeholder="User email"
           />
           <Field
             label="Avatar URL"
             name="photoURL"
+            id="photoURL"
             type="text"
             placeholder="Avatar URL"
           />
           <Field
             label="Password"
             name="password"
+            id="password"
             type="password"
             placeholder="Password"
           />
           <Field
             label="Repeat Password"
             name="repeatPassword"
+            id="repeatPassword"
             type="password"
             placeholder="Repeat Password"
           />
-
-          <GoogleAuthButton setLoading={setLoading} />
-          <Button
-            disabled={
-              objectLen(formik.errors)
-                ? true
-                : formik.isSubmitting
-                ? true
-                : false
-            }
-            type="submit"
-            variant="primary"
-          >
-            Register
-          </Button>
+          <div style={{ marginTop: 40 }}>
+            <GoogleAuthButton setLoading={setLoading} />
+            <Button
+              disabled={
+                formik.isSubmitting
+                  ? true
+                  : objectLen(formik.errors)
+                  ? true
+                  : false
+              }
+              htmlType="submit"
+              type="primary"
+            >
+              Register
+            </Button>
+          </div>
         </Form>
       )}
     </Formik>

@@ -1,7 +1,8 @@
-import { auth, db } from "./firebase";
+import { auth, db } from './firebase';
+import { notification } from 'antd';
 
 export const loadingStyle = {
-  pointerEvents: "none",
+  pointerEvents: 'none',
   opacity: 0.5
 };
 
@@ -9,7 +10,7 @@ export async function createUserWithEmailAndPassword({
   displayName,
   email,
   password,
-  photoURL = "https://placekitten.com/200/200"
+  photoURL = 'https://placekitten.com/200/200'
 }) {
   try {
     const { user } = await auth().createUserWithEmailAndPassword(
@@ -68,7 +69,7 @@ export async function getDoc(path) {
 
 export function uniqueId() {
   return (
-    "_" +
+    '_' +
     (
       Number(String(Math.random()).slice(2)) +
       Date.now() +
@@ -77,15 +78,12 @@ export function uniqueId() {
   );
 }
 
-export function setErrors(errors, fun, error) {
-  const newErrors = [
-    ...errors,
-    {message: error.message}
-  ];
-  fun({
-    type: "CHANGE_ERRORS_STATE",
-    errors: newErrors
-  })
+export function setErrors(error) {
+  notification.error({
+    message: 'Something went wrong!',
+    description: error.message,
+    placement: 'bottomRight'
+  });
 }
 
-export const objectLen = (obj) => Object.keys(obj).length 
+export const objectLen = obj => Object.keys(obj).length;

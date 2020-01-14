@@ -1,22 +1,24 @@
 import React from 'react';
-import { Container, Tabs, Col, Tab } from 'react-bootstrap';
+import {Row, Col, Tabs} from 'antd';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 
+const { TabPane } = Tabs;
+
 const LoggedOut = () => {
   return (
-    <Container>
-      <Col xs={{ span: 6, offset: 3 }}>
+    <Row>
+      <Col span={6} offset={9}>
         <Tabs defaultActiveKey="register">
-          <Tab title="Register" eventKey="register">
+          <TabPane tab="Register" key="register">
             <RegisterForm />
-          </Tab>
-          <Tab title="Login" eventKey="login">
+          </TabPane>
+          <TabPane tab="Login" key="login">
             <LoginForm />
-          </Tab>
+          </TabPane>
         </Tabs>
       </Col>
-    </Container>
+    </Row>
   );
 };
 

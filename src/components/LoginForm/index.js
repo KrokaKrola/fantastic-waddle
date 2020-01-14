@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import { signInWithEmailAndPassword, setErrors, loadingStyle } from "./../../utils";
-import { useAppState } from "../../app-state";
 
 const LoginForm = () => {
-  const [{ errors }, dispatch] = useAppState();
   const [loading, setLoading] = useState(false);
 
   async function emailPaswordLoginHandler(event) {
@@ -18,7 +16,7 @@ const LoginForm = () => {
       });
     } catch (error) {
       setLoading(false);
-      setErrors(errors, dispatch, error);
+      setErrors(error);
     }
   }
 
