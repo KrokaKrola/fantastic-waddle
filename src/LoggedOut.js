@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Tabs, Spin } from 'antd';
-import RegisterForm from './components/RegisterForm';
-import LoginForm from './components/LoginForm';
+import Login from './components/Loggedout/Login'
+import Register from './components/Loggedout/Register';
 
 const { TabPane } = Tabs;
 
@@ -13,10 +13,10 @@ const LoggedOut = () => {
         <Col span={8}>
           <Tabs defaultActiveKey="register">
             <TabPane tab="Register" key="register">
-              <RegisterForm setSubmiting={setSubmiting} />
+              <Register setSubmiting={setSubmiting} />
             </TabPane>
             <TabPane tab="Login" key="login">
-              <LoginForm />
+              <Login setSubmiting={setSubmiting} />
             </TabPane>
           </Tabs>
         </Col>

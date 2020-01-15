@@ -1,6 +1,6 @@
 import React from 'react';
 import { useField } from 'formik';
-import { Input, Form } from 'antd';
+import { Input, Form, Icon } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -25,3 +25,7 @@ export default function Field({ label, ...props }) {
     </FormItem>
   );
 }
+
+export const FieldIcon = ({ type }) => {
+  return <Icon type={type} style={{ color: 'rgba(0,0,0,.25)' }} />;
+};

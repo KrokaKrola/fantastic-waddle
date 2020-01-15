@@ -17,7 +17,7 @@ const GoogleAuthButton = ({ setLoading }) => {
   };
 
   return (
-    <Button onClick={googleAuthHandler} type="dashed">
+    <Button size={'large'} onClick={googleAuthHandler} type="dashed">
       <img style={{ width: 20 }} src={googleSvg} alt="" />
     </Button>
   );

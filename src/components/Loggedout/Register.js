@@ -1,14 +1,14 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { Button, Form, Icon } from 'antd';
+import { Button, Form } from 'antd';
 import * as Yup from 'yup';
 import GoogleAuthButton from './GoogleAuthButton';
-import Field from '../utilsComponents/Field';
+import Field, { FieldIcon } from '../utilsComponents/Field';
 import {
   createUserWithEmailAndPassword,
   setErrors,
   objectLen
-} from './../../utils';
+} from '../../utils';
 import {
   maxError,
   minError,
@@ -39,7 +39,7 @@ const RegisterForm = ({ setSubmiting }) => {
   return (
     <Formik
       initialValues={{
-        displayName: sessionStorage.getItem('displayName'),
+        displayName: sessionStorage.getItem('displayName') || '',
         email: sessionStorage.getItem('email'),
         photoURL:
           sessionStorage.getItem('photoURL') ||
@@ -71,14 +71,14 @@ const RegisterForm = ({ setSubmiting }) => {
       }}
     >
       {formik => (
-        <Form onSubmit={formik.handleSubmit} layout={'horizontal'}>
+        <Form onSubmit={formik.handleSubmit} layout="horizontal">
           <Field
             label="Name"
             name="displayName"
             id="displayName"
             type="text"
             placeholder="User name"
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<FieldIcon type="user" />}
           />
           <Field
             label="Email"
@@ -86,7 +86,7 @@ const RegisterForm = ({ setSubmiting }) => {
             id="email"
             type="email"
             placeholder="User email"
-            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<FieldIcon type="mail" />}
           />
           <Field
             label="Avatar URL"
@@ -94,7 +94,7 @@ const RegisterForm = ({ setSubmiting }) => {
             id="photoURL"
             type="text"
             placeholder="Avatar URL"
-            prefix={<Icon type="link" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<FieldIcon type="link" />}
           />
           <Field
             label="Password"
@@ -102,7 +102,7 @@ const RegisterForm = ({ setSubmiting }) => {
             id="password"
             type="password"
             placeholder="Password"
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<FieldIcon type="lock" />}
           />
           <Field
             label="Repeat Password"
@@ -110,22 +110,37 @@ const RegisterForm = ({ setSubmiting }) => {
             id="repeatPassword"
             type="password"
             placeholder="Repeat Password"
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<FieldIcon type="lock" />}
           />
-          <div>
-            <GoogleAuthButton setLoading={setSubmiting} />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             <Button
               disabled={objectLen(formik.errors) ? true : false}
               htmlType="submit"
               type="primary"
+              size={'large'}
+              style={{
+                padding: '0 40px'
+              }}
             >
               Register
             </Button>
+            <span style={{ margin: '0 20px', opacity: 0.7 }}>
+              or login with
+            </span>
+            <GoogleAuthButton setLoading={setSubmiting} />
           </div>
         </Form>
       )}
     </Formik>
   );
 };
+
+
 
 export default RegisterForm;
