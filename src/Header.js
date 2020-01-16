@@ -4,7 +4,7 @@ import mainLogo from './assets/mainLogo.png';
 import LinkText from './components/utilsComponents/LinkText';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppState } from './app-state';
-import HeaderUserInfo from './components/Header/HeaderUserInfo'
+import HeaderUserInfo from './components/Header/HeaderUserInfo';
 
 const StyledHeader = styled.header`
   background-color: #fff;
@@ -24,7 +24,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Logo = styled.a`
+const StyledLink = styled(Link)`
   max-width: 120px;
   img {
     display: block;
@@ -38,9 +38,9 @@ export default function Header() {
   return (
     <StyledHeader>
       <Container>
-        <Logo href="/">
+        <StyledLink to="/">
           <img src={mainLogo} alt="Logo" title="Trivia game" />
-        </Logo>
+        </StyledLink>
         {auth ? (
           <HeaderUserInfo user={auth} />
         ) : (
