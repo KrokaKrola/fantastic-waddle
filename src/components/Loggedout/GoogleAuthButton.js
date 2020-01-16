@@ -3,6 +3,19 @@ import { Button } from "antd";
 import { googleAuthProvider } from "../../firebase";
 import { setErrors } from "../../utils";
 import googleSvg from "../../assets/google.svg";
+import styled from 'styled-components';
+
+const GoogleButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+
+  span {
+    margin: 0 20px 0 0;
+    opacity: 0.7;
+  }
+`;
 
 const GoogleAuthButton = ({ setLoading }) => {
 
@@ -17,9 +30,14 @@ const GoogleAuthButton = ({ setLoading }) => {
   };
 
   return (
-    <Button size={'large'} onClick={googleAuthHandler} type="dashed">
-      <img style={{ width: 20 }} src={googleSvg} alt="" />
-    </Button>
+    <GoogleButtonContainer>
+      <span>
+        or login with
+      </span>
+      <Button size={'large'} onClick={googleAuthHandler} type="dashed">
+        <img style={{ width: 20 }} src={googleSvg} alt="" />
+      </Button>
+    </GoogleButtonContainer>
   );
 };
 

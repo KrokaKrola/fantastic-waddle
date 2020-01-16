@@ -1,27 +1,34 @@
 import React, { useState } from 'react';
-import { Row, Col, Tabs, Spin } from 'antd';
-import Login from './components/Loggedout/Login'
-import Register from './components/Loggedout/Register';
+import { Spin } from 'antd';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import SignIn from './components/Loggedout/Login';
+import SignUp from './components/Loggedout/Register';
+import styled from 'styled-components';
 
-const { TabPane } = Tabs;
+const LoggedOutContainer = styled.div`
+    background: white;
+    max-width: 560px;
+    margin: auto;
+    padding: 40px;
+    width: 100%;
+`;
 
 const LoggedOut = () => {
   const [submiting, setSubmiting] = useState(false);
   return (
-    <Spin spinning={submiting}>
-      <Row style={{ display: 'flex', justifyContent: 'center' }}>
-        <Col span={8}>
-          <Tabs defaultActiveKey="register">
-            <TabPane tab="Register" key="register">
-              <Register setSubmiting={setSubmiting} />
-            </TabPane>
-            <TabPane tab="Login" key="login">
-              <Login setSubmiting={setSubmiting} />
-            </TabPane>
-          </Tabs>
-        </Col>
-      </Row>
-    </Spin>
+    <LoggedOutContainer>
+      <Spin spinning={submiting}>
+          <Switch>
+            <Route path="/signin">
+              <SignIn setSubmiting={setSubmiting} />
+            </Route>
+            <Route path="/signup">
+              <SignUp setSubmiting={setSubmiting} />
+            </Route>
+            <Redirect from='/' to='/signup' />
+          </Switch>
+      </Spin>
+    </LoggedOutContainer>
   );
 };
 

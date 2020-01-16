@@ -49,19 +49,23 @@ const RegisterForm = ({ setSubmiting }) => {
       }}
       validationSchema={Yup.object({
         displayName: Yup.string()
+          .nullable()
           .max(15, maxError(15))
           .min(2, minError(2))
           .required(required),
         email: Yup.string()
+          .nullable()
           .email(emailError)
           .required(required),
         photoURL: Yup.string()
-          .url(urlError)
-          .required(required),
+          .nullable()
+          .url(urlError),
         password: Yup.string()
+          .nullable()
           .min(6, minError(6))
           .required(required),
         repeatPassword: Yup.string()
+          .nullable()
           .oneOf([Yup.ref('password'), null], passwordMatchError)
           .required(required)
       })}
@@ -73,7 +77,7 @@ const RegisterForm = ({ setSubmiting }) => {
       {formik => (
         <Form onSubmit={formik.handleSubmit} layout="horizontal">
           <Field
-            label="Name"
+            label="Name* "
             name="displayName"
             id="displayName"
             type="text"
@@ -81,7 +85,7 @@ const RegisterForm = ({ setSubmiting }) => {
             prefix={<FieldIcon type="user" />}
           />
           <Field
-            label="Email"
+            label="Email* "
             name="email"
             id="email"
             type="email"
@@ -97,7 +101,7 @@ const RegisterForm = ({ setSubmiting }) => {
             prefix={<FieldIcon type="link" />}
           />
           <Field
-            label="Password"
+            label="Password* "
             name="password"
             id="password"
             type="password"
@@ -105,34 +109,26 @@ const RegisterForm = ({ setSubmiting }) => {
             prefix={<FieldIcon type="lock" />}
           />
           <Field
-            label="Repeat Password"
+            label="Confirm Password* "
             name="repeatPassword"
             id="repeatPassword"
             type="password"
-            placeholder="Repeat Password"
+            placeholder="Confirm Password"
             prefix={<FieldIcon type="lock" />}
           />
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
+          <div>
             <Button
               disabled={objectLen(formik.errors) ? true : false}
               htmlType="submit"
               type="primary"
               size={'large'}
+              block={true}
               style={{
                 padding: '0 40px'
               }}
             >
               Register
             </Button>
-            <span style={{ margin: '0 20px', opacity: 0.7 }}>
-              or login with
-            </span>
             <GoogleAuthButton setLoading={setSubmiting} />
           </div>
         </Form>
@@ -140,7 +136,5 @@ const RegisterForm = ({ setSubmiting }) => {
     </Formik>
   );
 };
-
-
 
 export default RegisterForm;

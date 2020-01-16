@@ -14,8 +14,8 @@ export default function Field({ label, ...props }) {
       htmlFor={props.id}
       help={errorState}
       validateStatus={errorState ? 'error' : 'success'}
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
+      labelCol={{ span: 7 }}
+      wrapperCol={{ span: 17 }}
     >
       {props.type === 'password' ? (
         <Input.Password size="large" {...field} {...props} />

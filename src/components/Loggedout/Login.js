@@ -1,22 +1,25 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { Button, Form } from 'antd';
-import { signInWithEmailAndPassword, objectLen } from '../../utils';
+import { signInWithEmailAndPassword, objectLen, setErrors } from '../../utils';
 import Field, { FieldIcon } from '../utilsComponents/Field';
 import { minError, required, emailError } from '../../errorMessages';
 import * as Yup from 'yup';
 import GoogleAuthButton from './GoogleAuthButton';
 
 const LoginForm = ({ setSubmiting }) => {
-  async function emailPaswordLoginHandler(event) {
-    event.preventDefault();
-    const [loginEmail, loginPassword] = event.target.elements;
+  async function emailPaswordLoginHandler(values) {
+    setSubmiting(true);
+    const {loginEmail, loginPassword} = values;
     try {
       await signInWithEmailAndPassword({
-        email: loginEmail.value,
-        password: loginPassword.value
+        email: loginEmail,
+        password: loginPassword
       });
-    } catch (error) {}
+    } catch (error) {
+      setSubmiting(false);
+      setErrors(error);
+    }
   }
 
   return (
@@ -53,26 +56,19 @@ const LoginForm = ({ setSubmiting }) => {
             prefix={<FieldIcon type="lock" />}
           />
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
           >
             <Button
               disabled={objectLen(formik.errors) ? true : false}
               htmlType="submit"
               type="primary"
               size={'large'}
+              block={true}
               style={{
                 padding: '0 40px'
               }}
             >
               Log in
             </Button>
-            <span style={{ margin: '0 20px', opacity: 0.7 }}>
-              or login with
-            </span>
             <GoogleAuthButton setLoading={setSubmiting} />
           </div>
         </Form>
