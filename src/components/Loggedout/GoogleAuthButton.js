@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 import { googleAuthProvider } from "../../firebase";
-import { setErrors } from "../../utils";
+import { setErrors } from "../../helpers/utils";
 import googleSvg from "../../assets/google.svg";
 import styled from 'styled-components';
 

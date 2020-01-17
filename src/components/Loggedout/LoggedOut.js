@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Spin } from 'antd';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import SignIn from './components/Loggedout/Login';
-import SignUp from './components/Loggedout/Register';
+import SignIn from './Login';
+import SignUp from './Register';
 import styled from 'styled-components';
 
 const LoggedOutContainer = styled.div`

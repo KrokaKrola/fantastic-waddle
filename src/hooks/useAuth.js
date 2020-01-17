@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useAppState } from "./app-state";
-import { onAuthStateChanged } from "./utils";
+import { useAppState } from "../store/app-state";
+import { onAuthStateChanged } from "../helpers/utils";
 
 export default function useAuth() {
   const [{ auth, authAttempted }, dispatch] = useAppState();

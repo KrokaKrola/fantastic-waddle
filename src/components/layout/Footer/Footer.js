@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import LinkText from './components/utilsComponents/LinkText';
+import LinkText from '../../utilsComponents/LinkText';
 import { Link } from 'react-router-dom';
 
 const FooterDiv = styled.div`

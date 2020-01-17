@@ -1,9 +1,9 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { Button, Form } from 'antd';
-import { signInWithEmailAndPassword, objectLen, setErrors } from '../../utils';
+import { signInWithEmailAndPassword, objectLen, setErrors } from '../../helpers/utils';
 import Field, { FieldIcon } from '../utilsComponents/Field';
-import { minError, required, emailError } from '../../errorMessages';
+import { minError, required, emailError } from '../../helpers/errorMessages';
 import * as Yup from 'yup';
 import GoogleAuthButton from './GoogleAuthButton';
 

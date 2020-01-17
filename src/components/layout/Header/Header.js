@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import mainLogo from './assets/mainLogo.png';
-import LinkText from './components/utilsComponents/LinkText';
+import mainLogo from '../../../assets/mainLogo.png';
+import LinkText from '../../utilsComponents/LinkText';
 import { Link, useLocation } from 'react-router-dom';
-import { useAppState } from './app-state';
-import HeaderUserInfo from './components/Header/HeaderUserInfo';
+import { useAppState } from '../../../store/app-state';
+import HeaderUserInfo from './HeaderUserInfo';
+import Container from '../../utilsComponents/Container';
 
 const StyledHeader = styled.header`
   background-color: #fff;
@@ -14,14 +15,10 @@ const StyledHeader = styled.header`
   align-items: center;
 `;
 
-const Container = styled.div`
-  max-width: 1180px;
-  padding: 0 20px;
+const HeaderContainer = styled(Container)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 auto;
-  width: 100%;
 `;
 
 const StyledLink = styled(Link)`
@@ -34,15 +31,15 @@ const StyledLink = styled(Link)`
 
 export default function Header() {
   const { pathname } = useLocation();
-  const [{ auth }] = useAppState();
+  const [{ auth, user }] = useAppState();
   return (
     <StyledHeader>
-      <Container>
+      <HeaderContainer>
         <StyledLink to="/">
           <img src={mainLogo} alt="Logo" title="Trivia game" />
         </StyledLink>
         {auth ? (
-          <HeaderUserInfo user={auth} />
+          <HeaderUserInfo auth={auth} user={user} />
         ) : (
           <Link to={pathname === '/signup' ? '/signin' : '/signup'}>
             <LinkText>
@@ -50,7 +47,7 @@ export default function Header() {
             </LinkText>
           </Link>
         )}
-      </Container>
+      </HeaderContainer>
     </StyledHeader>
   );
 }

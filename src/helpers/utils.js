@@ -1,5 +1,6 @@
-import { auth, db } from './firebase';
+import { auth, db } from '../firebase';
 import { notification } from 'antd';
+import axios from 'axios';
 
 export const loadingStyle = {
   pointerEvents: 'none',
@@ -87,3 +88,8 @@ export function setErrors(error) {
 }
 
 export const objectLen = obj => Object.keys(obj).length;
+
+export const trivia = axios.create({
+  baseURL: 'https://opentdb.com/',
+  timeout: 1000
+});

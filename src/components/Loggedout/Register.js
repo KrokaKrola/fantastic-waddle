@@ -8,7 +8,7 @@ import {
   createUserWithEmailAndPassword,
   setErrors,
   objectLen
-} from '../../utils';
+} from '../../helpers/utils';
 import {
   maxError,
   minError,
@@ -16,7 +16,7 @@ import {
   emailError,
   urlError,
   passwordMatchError
-} from '../../errorMessages';
+} from '../../helpers/errorMessages';
 
 const RegisterForm = ({ setSubmiting }) => {
   const emailPaswordRegisterHandler = async values => {
@@ -40,11 +40,11 @@ const RegisterForm = ({ setSubmiting }) => {
     <Formik
       initialValues={{
         displayName: sessionStorage.getItem('displayName') || '',
-        email: sessionStorage.getItem('email'),
+        email: sessionStorage.getItem('email') || '',
         photoURL:
           sessionStorage.getItem('photoURL') ||
           'https://placekitten.com/200/200',
-        password: sessionStorage.getItem('password'),
+        password: sessionStorage.getItem('password') || '',
         repeatPassword: ''
       }}
       validationSchema={Yup.object({

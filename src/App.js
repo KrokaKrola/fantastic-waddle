@@ -1,11 +1,11 @@
 import React from 'react';
-import { initialState, appStateReducer } from './appReducer';
-import AppStateProvider from './app-state';
-import useAuth from './useAuth';
-import LoggedOut from './LoggedOut';
-import LoggedIn from './LoggedIn';
-import Header from './Header';
-import Footer from './Footer';
+import { initialState, appStateReducer } from './store/appReducer';
+import AppStateProvider from './store/app-state';
+import useAuth from './hooks/useAuth';
+import LoggedOut from './components/Loggedout/LoggedOut';
+import LoggedIn from './components/LoggedIn/LoggedIn';
+import Header from './components/layout/Header/Header';
+import Footer from './components/layout/Footer/Footer';
 import styled from 'styled-components';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 

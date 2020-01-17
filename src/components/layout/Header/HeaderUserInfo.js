@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { logout } from '../../utils';
+import { logout } from '../../../helpers/utils';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 const Container = styled.div`
@@ -28,18 +28,22 @@ const Container = styled.div`
   }
 `;
 
-export default function HeaderUserInfo({ user }) {
-  const { photoURL, displayName, topScore } = user;
+export default function HeaderUserInfo({ user, auth }) {
+  const { photoURL, displayName, topScore } = user || auth;
   return (
     <Container>
-      <img src={photoURL} alt="" />
-      <div>
-        <span>{displayName}</span>
-        <span>Top score: {topScore}</span>
-      </div>
-      <Link to="/signin" onClick={logout} title="Logout">
-        <Icon type="logout" style={{ fontSize: 32, color: '#8243b6' }} />
-      </Link>
+      {user && (
+        <>
+          <img src={photoURL} alt="" />
+          <div>
+            <span>{displayName}</span>
+            <span>Top score: {topScore}</span>
+          </div>
+          <Link to="/signin" onClick={logout} title="Logout">
+            <Icon type="logout" style={{ fontSize: 32, color: '#8243b6' }} />
+          </Link>
+        </>
+      )}
     </Container>
   );
 }

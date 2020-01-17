@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { getDoc } from './utils';
-import { useAppState } from './app-state';
+import { getDoc } from '../../helpers/utils';
+import { useAppState } from '../../store/app-state';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import Categories from '../Categories';
 
 function LoggedIn() {
   const [{ auth, user }, dispatch] = useAppState();
@@ -14,12 +15,12 @@ function LoggedIn() {
   }, [user, auth.uid, dispatch]);
 
   return user ? (
-    <>
+    <div style={{ marginTop: 40 }}>
       <Switch>
-        <Route path="/categories">categories</Route>
-        <Redirect to="/categories" />
+        <Route path="/category" children={Categories}></Route>
+        <Redirect to="/category"/>
       </Switch>
-    </>
+    </div>
   ) : null;
 }
 
