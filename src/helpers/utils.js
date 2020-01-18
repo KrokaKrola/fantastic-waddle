@@ -58,7 +58,11 @@ export function onAuthStateChanged(callback) {
 }
 
 export async function setDoc(path, data) {
-  await db.doc(path).set({ data }, { merge: true });
+  await db.doc(path).set({ ...data }, { merge: true });
+}
+
+export async function removeDoc(path) {
+  await db.doc(path).delete();
 }
 
 export async function getDoc(path) {
@@ -87,9 +91,30 @@ export function setErrors(error) {
   });
 }
 
+export const colorGeneration = id =>
+  `rgb(${id * 2 + Math.random() * 100}, ${id * 3 + Math.random() * 125}, ${id *
+    4 +
+    Math.random() * 75})`;
+
 export const objectLen = obj => Object.keys(obj).length;
 
 export const trivia = axios.create({
   baseURL: 'https://opentdb.com/',
-  timeout: 1000
+  timeout: 2000
 });
+
+export function rainbowStop(h) {
+  h = h / 15 ;
+  let f = (n, k = (n + h * 12) % 12) =>
+    0.5 - 0.5 * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+  let rgb2hex = (r, g, b) =>
+    '#' +
+    [r, g, b]
+      .map(x =>
+        Math.round(x * 255)
+          .toString(16)
+          .padStart(2, 0)
+      )
+      .join('');
+  return rgb2hex(f(0), f(8), f(4));
+}

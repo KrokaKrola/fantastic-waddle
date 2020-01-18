@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Container from '../utilsComponents/Container';
 import { Tabs, Icon } from 'antd';
 import AllCategories from './AllCategories';
@@ -7,10 +7,12 @@ import FavouriteCategories from './FavouriteCategories';
 const { TabPane } = Tabs;
 
 export default function Categories() {
+  const [activeTabKey, setActiveTabKey] = useState("1");
   return (
     <Container>
       <Tabs
-        defaultActiveKey="1"
+        activeKey={activeTabKey}
+        onTabClick={(key) => {setActiveTabKey(key)}}
         tabBarStyle={{
           display: 'flex',
           justifyContent: 'center',
@@ -21,7 +23,7 @@ export default function Categories() {
           <AllCategories />
         </TabPane>
         <TabPane tab={TabPlaceholder('Favourite categories', 'star')} key="2">
-          <FavouriteCategories />
+          <FavouriteCategories handleTabChange={setActiveTabKey} />
         </TabPane>
       </Tabs>
     </Container>

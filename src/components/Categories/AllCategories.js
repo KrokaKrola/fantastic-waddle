@@ -1,31 +1,34 @@
 import React from 'react';
 import useCategories from '../../hooks/useCategories';
-import { Spin } from 'antd';
-import styled from 'styled-components';
-
-const SpinnerContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: ${props => (props.loading === 'true' ? '' : 'none')};
-`;
+import Category from './Category';
+import CategoriesWrapper from '../utilsComponents/CategoriesWrapper';
+import SpinnerContainer from '../utilsComponents/SpinnerContainer';
+import { useAppState } from '../../store/app-state';
 
 export default function AllCategories() {
   const [loading, categories] = useCategories();
+  const [{ favourites }] = useAppState();
+
+  function isFav(id) {
+    return favourites &&
+      favourites.findIndex(item => {
+        return parseInt(item.id) === id;
+      }) !== -1
+      ? true
+      : false;
+  }
+
   return (
-    <div style={{ minHeight: 200, position: 'relative' }}>
-      <SpinnerContainer loading={loading.toString()}>
-        <Spin spinning={loading} />
-      </SpinnerContainer>
+    <CategoriesWrapper>
+      <SpinnerContainer loading={loading} />
       {categories &&
         categories.map(category => (
-          <div key={category.id}>{category.name}</div>
+          <Category
+            fav={isFav(category.id)}
+            key={category.id}
+            category={category}
+          />
         ))}
-    </div>
+    </CategoriesWrapper>
   );
 }

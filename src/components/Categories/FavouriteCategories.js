@@ -1,9 +1,31 @@
-import React from 'react'
+import React from 'react';
+import { useAppState } from '../../store/app-state';
+import Category from './Category';
+import CategoriesWrapper from '../utilsComponents/CategoriesWrapper';
+import LinkText from '../utilsComponents/LinkText';
 
-export default function FavouriteCategories() {
+export default function FavouriteCategories({handleTabChange}) {
+  const [{ favourites }] = useAppState();
+  console.log(favourites);
   return (
-    <div>
-      Some FavouriteCategories
-    </div>
-  )
+    <CategoriesWrapper>
+      {favourites && favourites.length > 0 ? (
+        favourites.map(favourite => (
+          <Category fav={true} key={favourite.id} category={favourite} />
+        ))
+      ) : (
+        <>
+          <h4 style={{ flex: '1 0 100%', textAlign: 'center' }}>You dont have favourite categories yet</h4>
+          <h5 style={{ flex: '1 0 100%', textAlign: 'center' }}>
+            you can add it on the{" "}
+            <LinkText 
+              style={{cursor: 'pointer'}}
+              onClick={() => handleTabChange("1")}>
+              All categories tab!
+            </LinkText>
+          </h5>
+        </>
+      )}
+    </CategoriesWrapper>
+  );
 }
