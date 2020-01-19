@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
-import { getDoc, subscribeToCollection } from "../../helpers/utils";
-import { useAppState } from "../../store/app-state";
-import { Switch, Route, Redirect } from "react-router-dom";
-import Categories from "../Categories";
+import React, { useEffect } from 'react';
+import { getDoc, subscribeToCollection } from '../../helpers/utils';
+import { useAppState } from '../../store/app-state';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Categories from '../Categories';
+import Difficulty from '../Difficulty';
 
 function LoggedIn() {
   const [{ auth, user, game }, dispatch] = useAppState();
@@ -14,14 +15,14 @@ function LoggedIn() {
         collection.forEach(doc => {
           docs.push(doc.data());
         });
-        dispatch({ type: "CHANGE_FAVOURITES_STATE", favourites: docs });
+        dispatch({ type: 'CHANGE_FAVOURITES_STATE', favourites: docs });
       }
       getDoc(`/users/${auth.uid}`).then(user => {
         cleanup = subscribeToCollection(
           `/users/${auth.uid}/favourites`,
           collectionCallback
         );
-        dispatch({ type: "LOAD_USER", user: user });
+        dispatch({ type: 'LOAD_USER', user: user });
       });
       return cleanup;
     }
@@ -33,10 +34,14 @@ function LoggedIn() {
         <Route path="/category">
           <Categories />
         </Route>
-        <Route
-          path="/difficulty"
-          children={JSON.stringify(game, null, 2)}
-        ></Route>
+        {!!game.choosedCategory ? (
+          <Route path="/difficulty">
+            <Difficulty />
+          </Route>
+        ) : (
+          <Redirect to="/category" />
+        )}
+        <Route path="/game" children={JSON.stringify(game, null, 2)} />
         <Redirect to="/category" />
       </Switch>
     </div>

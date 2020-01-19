@@ -4,7 +4,7 @@ export const initialState = {
   user: null,
   game: {
     choosedCategory: null,
-    choosedDifficulty: null
+    choosedDifficulty: 'any'
   },
   favourites: null
 };
