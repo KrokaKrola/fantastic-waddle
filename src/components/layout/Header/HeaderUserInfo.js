@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { logout } from '../../../helpers/utils';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import { useSpring, animated } from "react-spring";
+
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -13,7 +15,7 @@ const Container = styled.div`
     margin-right: 10px;
   }
 
-  div {
+  div > div {
     flex-basis: 50%;
     display: flex;
     flex-direction: column;
@@ -28,12 +30,28 @@ const Container = styled.div`
   }
 `;
 
+const UserBlock = styled(animated.div)`
+    display: flex;
+    align-items: center;
+`
+
 export default function HeaderUserInfo({ user, auth }) {
   const { photoURL, displayName, topScore } = user || auth;
+  const fade = useSpring({
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 1,
+    },
+    config: {
+      duration: 250
+    }
+  });
   return (
     <Container>
       {user && (
-        <>
+        <UserBlock style={fade}>
           <img src={photoURL} alt="" />
           <div>
             <span>{displayName}</span>
@@ -42,7 +60,7 @@ export default function HeaderUserInfo({ user, auth }) {
           <Link to="/signin" onClick={logout} title="Logout">
             <Icon type="logout" style={{ fontSize: 32, color: '#8243b6' }} />
           </Link>
-        </>
+        </UserBlock>
       )}
     </Container>
   );

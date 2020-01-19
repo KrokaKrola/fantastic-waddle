@@ -17,17 +17,21 @@ import {
   urlError,
   passwordMatchError
 } from "../../helpers/errorMessages";
-import { useSpring, animated } from "react-spring";
+import { useSpring } from "react-spring";
+import LogoutContainer from "../utilsComponents/LogoutContainer";
 
 const RegisterForm = ({ setSubmiting }) => {
   const fade = useSpring({
     from: {
       opacity: 0,
-      transform: `translate3d(0px, 15px, 0px)`
+      transform: `scale(0.95)`
     },
     to: {
       opacity: 1,
-      transform: `translate3d(0px, 0px, 0px)`
+      transform: `scale(1)`
+    },
+    config: {
+      duration: 250
     }
   });
   const emailPaswordRegisterHandler = async values => {
@@ -48,7 +52,7 @@ const RegisterForm = ({ setSubmiting }) => {
   };
 
   return (
-    <animated.div style={fade}>
+    <LogoutContainer style={fade}>
       <Formik
         initialValues={{
           displayName: sessionStorage.getItem("displayName") || "",
@@ -146,7 +150,7 @@ const RegisterForm = ({ setSubmiting }) => {
           </Form>
         )}
       </Formik>
-    </animated.div>
+    </LogoutContainer>
   );
 };
 

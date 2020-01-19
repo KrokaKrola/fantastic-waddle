@@ -18,6 +18,9 @@ const AppContainer = styled.div`
     height: 65.5px;
     margin: 0!important;
   }
+  .ant-spin-nested-loading {
+    width: 100%;
+  }
 `;
 
 function App() {
