@@ -11,6 +11,12 @@ const LoggedOutContainer = styled.div`
     margin: auto;
     padding: 40px;
     width: 100%;
+    border: 1px solid #fafafa;
+    box-shadow: 0 0 25px rgba(0,0,0,0.05);
+    transition: .2s ease;
+    &:hover {
+      box-shadow: 0 0 35px rgba(0,0,0, 0.07);
+    }
 `;
 
 const LoggedOut = () => {

@@ -118,3 +118,11 @@ export function rainbowStop(h) {
       .join('');
   return rgb2hex(f(0), f(8), f(4));
 }
+
+export function subscribeToCollection(path, callback) {
+  try {
+    db.collection(path).onSnapshot(callback);
+  } catch(error) {
+    setErrors(error.message);
+  }
+}

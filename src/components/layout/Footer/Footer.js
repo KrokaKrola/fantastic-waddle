@@ -11,6 +11,7 @@ const FooterDiv = styled.div`
   align-items: center;
   font-size: 16px;
   font-weight: bold;
+  margin-bottom: 20px;
 
   a {
     margin-left: 6px;

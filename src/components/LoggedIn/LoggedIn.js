@@ -1,26 +1,29 @@
-import React, { useEffect } from 'react';
-import { getDoc } from '../../helpers/utils';
-import { useAppState } from '../../store/app-state';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import Categories from '../Categories';
-import { db } from '../../firebase';
+import React, { useEffect } from "react";
+import { getDoc, subscribeToCollection } from "../../helpers/utils";
+import { useAppState } from "../../store/app-state";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Categories from "../Categories";
 
 function LoggedIn() {
   const [{ auth, user, game }, dispatch] = useAppState();
   useEffect(() => {
     if (!user) {
-      getDoc(`/users/${auth.uid}`).then(user => {
-        db.collection(`/users/${auth.uid}/favourites`).onSnapshot(function(
-          collection
-        ) {
-          const docs = [];
-          collection.forEach(doc => {
-            docs.push(doc.data());
-          });
-          dispatch({ type: 'CHANGE_FAVOURITES_STATE', favourites: docs });
+      let cleanup = () => false;
+      function collectionCallback(collection) {
+        const docs = [];
+        collection.forEach(doc => {
+          docs.push(doc.data());
         });
-        dispatch({ type: 'LOAD_USER', user: user });
+        dispatch({ type: "CHANGE_FAVOURITES_STATE", favourites: docs });
+      }
+      getDoc(`/users/${auth.uid}`).then(user => {
+        cleanup = subscribeToCollection(
+          `/users/${auth.uid}/favourites`,
+          collectionCallback
+        );
+        dispatch({ type: "LOAD_USER", user: user });
       });
+      return cleanup;
     }
   }, [user, auth.uid, dispatch]);
 

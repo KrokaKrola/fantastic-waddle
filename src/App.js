@@ -13,6 +13,11 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  .ant-form-item {
+    height: 65.5px;
+    margin: 0!important;
+  }
 `;
 
 function App() {

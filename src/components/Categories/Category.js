@@ -20,10 +20,21 @@ const CategoryLink = styled(Link)`
   padding: 0 10px;
   background-color: ${props => rainbowStop(props.id)};
   transition: 0.2s ease;
-
   &:hover {
     color: #fff;
-    text-shadow: 0px 0px 25px black;
+  }
+`;
+
+const TiltedCategory = styled(Tilt)`
+  width: 20%;
+  margin: 2.5%;
+  position: relative;
+
+  &:hover {
+    a {
+      color: #fff;
+      text-shadow: 0px 0px 40px rgba(0,0,0,0.5);
+    }
   }
 `;
 
@@ -35,9 +46,8 @@ const Category = ({ category, fav }) => {
     dispatch({ type: 'CHANGE_GAME_STATE', game: { choosedCategory: id } });
   };
   return (
-    <Tilt
+    <TiltedCategory
       className="Tilt"
-      style={{ width: '20%', margin: '2.5%', position: 'relative' }}
       options={{ max: 25, scale: 1.1 }}
     >
       <AddToFavourite fav={fav} id={id} uid={user.uid} name={name} />
@@ -47,7 +57,7 @@ const Category = ({ category, fav }) => {
         children={name}
         onClick={() => handleClick(id)}
       />
-    </Tilt>
+    </TiltedCategory>
   );
 };
 
