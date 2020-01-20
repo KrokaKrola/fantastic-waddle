@@ -4,6 +4,7 @@ import { useAppState } from '../../store/app-state';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Categories from '../Categories';
 import Difficulty from '../Difficulty';
+import Game from '../Game';
 
 function LoggedIn() {
   const [{ auth, user, game }, dispatch] = useAppState();
@@ -41,7 +42,9 @@ function LoggedIn() {
         ) : (
           <Redirect to="/category" />
         )}
-        <Route path="/game" children={JSON.stringify(game, null, 2)} />
+        <Route path="/game">
+          <Game />
+        </Route>
         <Redirect to="/category" />
       </Switch>
     </div>

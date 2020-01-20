@@ -3,8 +3,8 @@ export const initialState = {
   auth: null,
   user: null,
   game: {
-    choosedCategory: null,
-    choosedDifficulty: 'any'
+    choosedCategory: 31,
+    choosedDifficulty: 'easy'
   },
   favourites: null
 };

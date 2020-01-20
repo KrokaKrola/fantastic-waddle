@@ -91,6 +91,14 @@ export function setErrors(error) {
   });
 }
 
+export function setWarning(message, descr) {
+  notification.warning({
+    message: message,
+    description: descr,
+    placement: 'bottomRight'
+  })
+}
+
 export const colorGeneration = id =>
   `rgb(${id * 2 + Math.random() * 100}, ${id * 3 + Math.random() * 125}, ${id *
     4 +
@@ -125,4 +133,16 @@ export function subscribeToCollection(path, callback) {
   } catch(error) {
     setErrors(error.message);
   }
+}
+
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+export function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }

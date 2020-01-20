@@ -1,20 +1,49 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useAppState } from '../../store/app-state';
 import { Select, Button } from 'antd';
 import Container from '../utilsComponents/Container';
 import { Link } from 'react-router-dom';
 import { useSpring, animated } from 'react-spring';
 import { useCategory } from '../../hooks/useCategory';
+import { setWarning } from '../../helpers/utils';
 
 const { Option } = Select;
 
 export default function() {
   const [{ game }, dispatch] = useAppState();
+  const [disabled, setDisabled] = useState(false);
   const category = useCategory(game.choosedCategory);
-  console.log(category);
   const handleChange = value => {
-    dispatch({ type: 'CHANGE_GAME_STATE', game: { choosedDifficulty: value } });
+    dispatch({
+      type: 'CHANGE_GAME_STATE',
+      game: { choosedDifficulty: value }
+    });
+    enouthCheker(value);
   };
+  const enouthCheker = useCallback(
+    value => {
+      if (value === 'any' && category.total_question_count < 10) {
+        setDisabled(true);
+        setWarning(
+          `This category has not enough questions`,
+          'Please select another difficulty or another category'
+        );
+      } else if (category[`total${'_' + value}_question_count`] < 10) {
+        setDisabled(true);
+        setWarning(
+          `This category has not enough ${value} questions`,
+          'Please select another difficulty or another category'
+        );
+      } else {
+        setDisabled(false);
+      }
+    },
+    [category]
+  );
+  useEffect(() => {
+    category && enouthCheker(game.choosedDifficulty);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, enouthCheker]);
   const fade = useSpring({
     from: {
       opacity: 0
@@ -54,6 +83,7 @@ export default function() {
               icon="poweroff"
               size="large"
               style={{ width: 320, display: 'block', margin: '0 auto' }}
+              disabled={disabled}
             >
               Start game!
             </Button>

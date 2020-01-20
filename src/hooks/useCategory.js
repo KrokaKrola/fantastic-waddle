@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { trivia, setErrors, objectLen } from '../helpers/utils';
 
 let cache = {
-  total_question_count: 84,
-  total_easy_question_count: 30,
-  total_medium_question_count: 38,
-  total_hard_question_count: 16
+  total_question_count: 8,
+  total_easy_question_count: 11,
+  total_medium_question_count: 10,
+  total_hard_question_count: 9
 };
 
 export const useCategory = categoryId => {
