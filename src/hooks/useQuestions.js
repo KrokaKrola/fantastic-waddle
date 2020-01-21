@@ -12,7 +12,7 @@ export default function(category, difficulty) {
       setTimeout(() => {
         setQuestions(JSON.parse(testing).results);
         setLoading(false);
-      }, 1000);
+      }, 10);
       // trivia
       //   .get(
       //     `/api.php?amount=10&category=${category}${

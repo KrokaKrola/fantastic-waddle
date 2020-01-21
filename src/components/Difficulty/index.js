@@ -14,10 +14,6 @@ export default function() {
   const [disabled, setDisabled] = useState(false);
   const category = useCategory(game.choosedCategory);
   const handleChange = value => {
-    dispatch({
-      type: 'CHANGE_GAME_STATE',
-      game: { choosedDifficulty: value }
-    });
     enouthCheker(value);
   };
   const enouthCheker = useCallback(
@@ -28,21 +24,33 @@ export default function() {
           `This category has not enough questions`,
           'Please select another difficulty or another category'
         );
+        dispatch({
+          type: 'CHANGE_GAME_STATE',
+          game: { choosedDifficulty: null }
+        });
       } else if (category[`total${'_' + value}_question_count`] < 10) {
         setDisabled(true);
         setWarning(
           `This category has not enough ${value} questions`,
           'Please select another difficulty or another category'
         );
+        dispatch({
+          type: 'CHANGE_GAME_STATE',
+          game: { choosedDifficulty: null }
+        });
       } else {
         setDisabled(false);
+        dispatch({
+          type: 'CHANGE_GAME_STATE',
+          game: { choosedDifficulty: value }
+        });
       }
     },
-    [category]
+    [category, dispatch]
   );
   useEffect(() => {
     category && enouthCheker(game.choosedDifficulty);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, enouthCheker]);
   const fade = useSpring({
     from: {
@@ -67,7 +75,7 @@ export default function() {
             Choose Difficulty and Start Game!
           </h2>
           <Select
-            defaultValue={game.choosedDifficulty}
+            defaultValue={game.choosedDifficulty || 'any'}
             style={{ width: '320px', display: 'block', margin: '0 auto 40px' }}
             size="large"
             onChange={handleChange}

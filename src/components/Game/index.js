@@ -3,6 +3,7 @@ import useQuestions from '../../hooks/useQuestions';
 import { useAppState } from '../../store/app-state';
 import SpinnerContainer from '../utilsComponents/SpinnerContainer';
 import Question from './Question';
+import { Progress } from 'antd';
 
 export default function() {
   const [{ game }] = useAppState();
@@ -16,10 +17,20 @@ export default function() {
       <SpinnerContainer loading={loading} />
       {!loading &&
         (questions[activeQuestion] ? (
-          <Question
-            question={questions[activeQuestion]}
-            setActiveQuestion={setActiveQuestion}
-          />
+          <>
+            <Progress
+              percent={(activeQuestion / questions.length) * 100}
+              strokeColor={{
+                '0%': '#108ee9',
+                '100%': '#87d068'
+              }}
+              showInfo={false}
+            />
+            <Question
+              question={questions[activeQuestion]}
+              setActiveQuestion={setActiveQuestion}
+            />
+          </>
         ) : (
           'Game over'
         ))}

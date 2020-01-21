@@ -42,6 +42,13 @@ function LoggedIn() {
         ) : (
           <Redirect to="/category" />
         )}
+        {!!game.choosedDifficulty ? (
+          <Route path="/difficulty">
+            <Difficulty />
+          </Route>
+        ) : (
+          <Redirect to="/difficulty" />
+        )}
         <Route path="/game">
           <Game />
         </Route>
