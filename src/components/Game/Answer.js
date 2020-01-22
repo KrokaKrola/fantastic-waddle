@@ -36,10 +36,13 @@ const AnswerWrapper = styled.div`
 `;
 
 export default function Answer({
-  buttonState,
   name,
+  buttonState,
   clickHandler,
   setChoosedAnswer,
+  setScore,
+  correctAnswer,
+  setcountDownNeed,
   ...rest
 }) {
   return (
@@ -49,6 +52,10 @@ export default function Answer({
         if (buttonState) {
           clickHandler(false);
           setChoosedAnswer(name);
+          setScore(prevState =>
+            correctAnswer === name ? prevState + 1 : prevState
+          );
+          setcountDownNeed(false);
         }
       }}
     >

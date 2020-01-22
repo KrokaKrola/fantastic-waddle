@@ -5,34 +5,46 @@ import { shuffle } from '../../helpers/utils';
 import { Name, NextQuestionButton } from '../utilsComponents/QuestionParts';
 import Answer from './Answer';
 
-export default function Question({ question, setActiveQuestion, ...rest }) {
+export default function Question({
+  question,
+  setActiveQuestion,
+  setScore,
+  set,
+  setcountDownNeed
+}) {
   const [answers, setAnswers] = useState([]);
   const [buttonState, setButtonState] = useState(true);
   const [choosedAnswer, setChoosedAnswer] = useState('');
+  const {
+    correct_answer,
+    incorrect_answers,
+    question: questionText
+  } = question;
 
   useMemo(() => {
-    setAnswers(
-      shuffle([question.correct_answer, ...question.incorrect_answers])
-    );
-  }, [question.correct_answer, question.incorrect_answers]);
+    setAnswers(shuffle([correct_answer, ...incorrect_answers]));
+    set(true);
+  }, [correct_answer, incorrect_answers, set]);
 
   function correctAnswerState(currentItem, states) {
+    const { initial, correct, choosed_incorrect, incorrect } = states;
     return buttonState
-      ? states.initial
-      : currentItem === question.correct_answer
-      ? states.correct
-      : choosedAnswer === question.correct_answer
+      ? initial
+      : currentItem === correct_answer
+      ? correct
+      : choosedAnswer === correct_answer
       ? ''
       : choosedAnswer === currentItem
-      ? states.choosed_incorrect
-      : states.incorrect;
+      ? choosed_incorrect
+      : incorrect;
   }
 
   return (
     <Container style={{ maxWidth: 680 }}>
-      <Name dangerouslySetInnerHTML={{ __html: question.question }} />
+      <Name dangerouslySetInnerHTML={{ __html: questionText }} />
       {answers.map((item, index) => (
         <Tooltip
+          key={index}
           title={correctAnswerState(item, {
             initial: 'Choose correct answer',
             correct: 'Correct answer',
@@ -41,17 +53,19 @@ export default function Question({ question, setActiveQuestion, ...rest }) {
           })}
         >
           <Answer
-            key={index}
             name={item}
             buttonState={buttonState}
             clickHandler={setButtonState}
             setChoosedAnswer={setChoosedAnswer}
+            setScore={setScore}
+            correctAnswer={correct_answer}
+            setcountDownNeed={setcountDownNeed}
             className={correctAnswerState(item, {
               initial: '',
               correct: 'correct_answer',
               choosed_incorrect: 'choosed_incorrect_answer',
               incorrect: 'incorrect_answer'
-            })}
+            })}  
           />
         </Tooltip>
       ))}
@@ -60,6 +74,8 @@ export default function Question({ question, setActiveQuestion, ...rest }) {
         onClick={() => {
           setButtonState(true);
           setActiveQuestion(prevState => prevState + 1);
+          set(false);
+          setcountDownNeed(true);
         }}
       >
         Next question
