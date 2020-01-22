@@ -3,15 +3,19 @@ import { Spin } from 'antd';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import SignIn from './Login';
 import SignUp from './Register';
+import styled from 'styled-components';
+
+const FlexCenter = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+`;
 
 const LoggedOut = () => {
   const [submiting, setSubmiting] = useState(false);
   return (
-    <div style={{ display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-      width: '100%'}}>
+    <FlexCenter>
       <Spin spinning={submiting}>
           <Switch>
             <Route path="/signin">
@@ -23,7 +27,7 @@ const LoggedOut = () => {
             <Redirect from='/' to='/signup' />
           </Switch>
       </Spin>
-    </div>
+    </FlexCenter>
   );
 };
 
