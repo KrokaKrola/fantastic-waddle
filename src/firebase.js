@@ -27,7 +27,9 @@ export async function googleAuthProvider() {
         email: user.email,
         uid: user.uid,
         photoURL: user.photoURL,
-        topScore: 0
+        correctAnswers: 0,
+        totalQuestions: 0,
+        wrongAnswers: 0
       });
     }
   } catch (error) {

@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Categories from '../Categories';
 import Difficulty from '../Difficulty';
 import Game from '../Game';
+import User from '../User';
 
 function LoggedIn() {
   const [{ auth, user, game }, dispatch] = useAppState();
@@ -32,25 +33,25 @@ function LoggedIn() {
   return user ? (
     <div style={{ marginTop: 40 }}>
       <Switch>
+        <Route path="/user/:uid">
+          <User />
+        </Route>
         <Route path="/category">
           <Categories />
         </Route>
-        {!!game.choosedCategory ? (
-          <Route path="/difficulty">
-            <Difficulty />
-          </Route>
-        ) : (
-          <Redirect to="/category" />
-        )}
-        {!!game.choosedDifficulty ? (
-          <Route path="/difficulty">
-            <Difficulty />
-          </Route>
-        ) : (
-          <Redirect to="/difficulty" />
-        )}
+        <Route path="/difficulty">
+          <Difficulty />
+        </Route>
         <Route path="/game">
-          <Game />
+          {!!game.choosedCategory ? (
+            !!game.choosedDifficulty ? (
+              <Game />
+            ) : (
+              <Redirect to="/difficulty" />
+            )
+          ) : (
+            <Redirect to="/category" />
+          )}
         </Route>
         <Redirect to="/category" />
       </Switch>

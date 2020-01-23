@@ -30,7 +30,6 @@ const TiltedCategory = styled(animated.div)`
   margin: 2.5%;
   position: relative;
   box-shadow: 0px 10px 15px -5px rgba(0, 0, 0, 0.3);
-  tranisiton: 0.2s ease;
 
   &:hover {
     box-shadow: 0px 12px 30px -5px rgba(0, 0, 0, 0.4);
@@ -54,7 +53,7 @@ const Category = ({ category, fav }) => {
   const { id, name } = category;
   const [props, set] = useSpring(() => ({
     xys: [0, 0, 1],
-    config: { mass: 15, tension: 100, friction: 20 }
+    config: { mass: 25, tension: 150, friction: 50 }
   }));
 
   const handleClick = id => {

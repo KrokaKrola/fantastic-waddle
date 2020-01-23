@@ -27,7 +27,9 @@ export async function createUserWithEmailAndPassword({
       email: email,
       uid: user.uid,
       photoURL: photoURL,
-      topScore: 0
+      correctAnswers: 0,
+      totalQuestions: 0,
+      wrongAnswers: 0
     });
   } catch (error) {
     // Handle Errors here.
@@ -107,8 +109,7 @@ export const colorGeneration = id =>
 export const objectLen = obj => Object.keys(obj).length;
 
 export const trivia = axios.create({
-  baseURL: 'https://opentdb.com/',
-  timeout: 2000
+  baseURL: 'https://opentdb.com/'
 });
 
 export function rainbowStop(h) {

@@ -3,8 +3,8 @@ export const initialState = {
   auth: null,
   user: null,
   game: {
-    choosedCategory: 31,
-    choosedDifficulty: 'easy'
+    choosedCategory: null,
+    choosedDifficulty: null
   },
   favourites: null
 };
@@ -33,6 +33,14 @@ export const appStateReducer = (state, action) => {
         game: {
           ...state.game,
           ...action.game
+        }
+      };
+    case 'CHANGE_USER_STATS':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.userInfo
         }
       };
     default:

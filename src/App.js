@@ -6,6 +6,7 @@ import LoggedOut from './components/Loggedout/LoggedOut';
 import LoggedIn from './components/LoggedIn/LoggedIn';
 import Header from './components/layout/Header/Header';
 import Footer from './components/layout/Footer/Footer';
+import { About } from './components/About';
 import styled from 'styled-components';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
@@ -16,7 +17,7 @@ const AppContainer = styled.div`
 
   .ant-form-item {
     height: 65.5px;
-    margin: 0!important;
+    margin: 0 !important;
   }
   .ant-spin-nested-loading {
     width: 100%;
@@ -32,11 +33,9 @@ function App() {
         <Header />
         <Switch>
           <Route path="/about">
-            about
+            <About />
           </Route>
-          <Route path="/">
-            {auth ? <LoggedIn /> : <LoggedOut />}
-          </Route>
+          <Route path="/">{auth ? <LoggedIn /> : <LoggedOut />}</Route>
         </Switch>
         <Footer />
       </AppContainer>

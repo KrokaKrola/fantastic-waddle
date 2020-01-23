@@ -1,36 +1,27 @@
-import React from "react";
-import { Icon } from "antd";
-import styled from "styled-components";
-import { useSpring, animated } from "react-spring";
+import React, { useEffect } from 'react';
+import { Icon, Button } from 'antd';
+import styled from 'styled-components';
+import { useSpring, animated } from 'react-spring';
+import { useAppState } from '../../store/app-state';
+import { setDoc } from '../../helpers/utils';
+import { Link } from 'react-router-dom';
 
 export const RunOutOfTime = ({ score, length }) => {
-  const fade = useSpring({
-    from: {
-      opacity: 0,
-    },
-    to: {
-      opacity: 1
-    }
-  });
-  return (
-    <animated.div style={fade}>
-      <GameResultHeader
-        style={{
-          color: "tomato"
-        }}
-      >
-        Run out of time.{" "}
-        <Icon type="frown" theme="twoTone" twoToneColor="red" />
-      </GameResultHeader>
-      <GameResultSubheader>
-        Your score: {score} of {length} questions
-      </GameResultSubheader>
-      <SmiledSection>{smileCases(score)}</SmiledSection>
-    </animated.div>
-  );
-};
+  const [{ user }, dispatch] = useAppState();
+  useEffect(() => {
+    const userInfo = {
+      correctAnswers: user.correctAnswers + score,
+      totalQuestions: user.totalQuestions + length,
+      wrongAnswers: user.wrongAnswers + (length - score)
+    };
+    dispatch({
+      type: 'CHANGE_USER_STATS',
+      userInfo
+    });
+    setDoc(`/users/${user.uid}`, userInfo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, score]);
 
-export const GameOver = ({ score, length }) => {
   const fade = useSpring({
     from: {
       opacity: 0
@@ -41,14 +32,85 @@ export const GameOver = ({ score, length }) => {
   });
   return (
     <animated.div style={fade}>
-      <GameResultHeader style={{ color: "purple" }}>
-        Contgratz ! You finished the GAME !!!{" "}
+      <GameResultHeader
+        style={{
+          color: 'tomato'
+        }}
+      >
+        Run out of time.{' '}
+        <Icon type="frown" theme="twoTone" twoToneColor="red" />
+      </GameResultHeader>
+      <GameResultSubheader>
+        Your score: {score} of {length} questions
+      </GameResultSubheader>
+      <SmiledSection>{smileCases(score)}</SmiledSection>
+      <Link to="/category">
+        <Button
+          type="primary"
+          size="large"
+          style={{
+            width: 320,
+            display: 'block',
+            margin: '30px auto',
+            height: 60,
+            fontSize: '1.25rem'
+          }}
+        >
+          Back to catagories
+        </Button>
+      </Link>
+    </animated.div>
+  );
+};
+
+export const GameOver = ({ score, length }) => {
+  const [{ user }, dispatch] = useAppState();
+  useEffect(() => {
+    const userInfo = {
+      correctAnswers: user.correctAnswers + score,
+      totalQuestions: user.totalQuestions + length,
+      wrongAnswers: user.wrongAnswers + (length - score)
+    };
+    dispatch({
+      type: 'CHANGE_USER_STATS',
+      userInfo
+    });
+    setDoc(`/users/${user.uid}`, userInfo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, score]);
+  const fade = useSpring({
+    from: {
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  });
+  return (
+    <animated.div style={fade}>
+      <GameResultHeader style={{ color: 'purple' }}>
+        Contgratz ! You finished the GAME !!!{' '}
         <Icon type="smile" theme="twoTone" twoToneColor="lightcoral" />
       </GameResultHeader>
       <GameResultSubheader>
         Your score: {score} of {length} questions
       </GameResultSubheader>
       <SmiledSection>{smileCases(score)}</SmiledSection>
+      <Link to="/category">
+        <Button
+          type="primary"
+          size="large"
+          style={{
+            width: 320,
+            display: 'block',
+            margin: '30px auto',
+            height: 60,
+            fontSize: '1.25rem'
+          }}
+        >
+          Back to catagories
+        </Button>
+      </Link>
     </animated.div>
   );
 };
@@ -78,7 +140,7 @@ const smileCases = score => {
     return (
       <>
         <Icon type="smile" theme="twoTone" twoToneColor="lightcoral" />
-        <Icon type="fire" theme="filled" style={{ color: "red" }} />
+        <Icon type="fire" theme="filled" style={{ color: 'red' }} />
         <Icon type="smile" theme="twoTone" twoToneColor="lightcoral" />
       </>
     );

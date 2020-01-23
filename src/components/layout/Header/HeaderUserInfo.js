@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { logout } from '../../../helpers/utils';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from 'react-spring';
+import LinkText from '../../utilsComponents/LinkText';
 
 const Container = styled.div`
   display: flex;
@@ -31,18 +32,18 @@ const Container = styled.div`
 `;
 
 const UserBlock = styled(animated.div)`
-    display: flex;
-    align-items: center;
-`
+  display: flex;
+  align-items: center;
+`;
 
 export default function HeaderUserInfo({ user, auth }) {
-  const { photoURL, displayName, topScore } = user || auth;
+  const { photoURL, displayName, correctAnswers } = user || auth;
   const fade = useSpring({
     from: {
-      opacity: 0,
+      opacity: 0
     },
     to: {
-      opacity: 1,
+      opacity: 1
     },
     config: {
       duration: 250
@@ -54,8 +55,12 @@ export default function HeaderUserInfo({ user, auth }) {
         <UserBlock style={fade}>
           <img src={photoURL} alt="" />
           <div>
-            <span>{displayName}</span>
-            <span>Top score: {topScore}</span>
+            <Link to={`/user/${user.uid}`}>
+              <LinkText style={{ width: 'fit-content' }}>
+                {displayName}
+              </LinkText>
+            </Link>
+            <span>Correct answers: {correctAnswers}</span>
           </div>
           <Link to="/signin" onClick={logout} title="Logout">
             <Icon type="logout" style={{ fontSize: 32, color: '#8243b6' }} />
