@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { logout } from '../../../helpers/utils';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import { useSpring, animated } from 'react-spring';
+import { animated } from 'react-spring';
 import LinkText from '../../utilsComponents/LinkText';
+import { useFade } from '../../../hooks/useFade';
 
 const Container = styled.div`
   display: flex;
@@ -38,16 +39,8 @@ const UserBlock = styled(animated.div)`
 
 export default function HeaderUserInfo({ user, auth }) {
   const { photoURL, displayName, correctAnswers } = user || auth;
-  const fade = useSpring({
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    },
-    config: {
-      duration: 250
-    }
+  const [fade] = useFade({
+    duration: 250
   });
   return (
     <Container>

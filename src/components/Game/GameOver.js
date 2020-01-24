@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Icon, Button } from 'antd';
 import styled from 'styled-components';
-import { useSpring, animated } from 'react-spring';
 import { useAppState } from '../../store/app-state';
 import { setDoc } from '../../helpers/utils';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { useFade } from '../../hooks/useFade';
 
 export const RunOutOfTime = ({ score, length }) => {
   const [{ user }, dispatch] = useAppState();
@@ -22,16 +23,12 @@ export const RunOutOfTime = ({ score, length }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, score]);
 
-  const fade = useSpring({
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
+  const [fade, animated] = useFade();
   return (
     <animated.div style={fade}>
+          <Helmet>
+        <title>Trivia | Run out of time.</title>
+      </Helmet>
       <GameResultHeader
         style={{
           color: 'tomato'
@@ -78,16 +75,12 @@ export const GameOver = ({ score, length }) => {
     setDoc(`/users/${user.uid}`, userInfo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, score]);
-  const fade = useSpring({
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
+  const [fade, animated] = useFade();
   return (
     <animated.div style={fade}>
+              <Helmet>
+        <title>Trivia | You finished the GAME.</title>
+      </Helmet>
       <GameResultHeader style={{ color: 'purple' }}>
         Contgratz ! You finished the GAME !!!{' '}
         <Icon type="smile" theme="twoTone" twoToneColor="lightcoral" />

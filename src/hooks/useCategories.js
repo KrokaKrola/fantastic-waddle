@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { setErrors, trivia } from '../helpers/utils';
 
-let localCache = [
-  { id: 32, name: 'Cartoon & Animations' },
-  { id: 31, name: 'Anime & manga' }
-];
+let localCache = [];
 
 export default function() {
   const [categories, setCategories] = useState([]);

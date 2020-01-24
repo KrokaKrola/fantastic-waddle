@@ -1,10 +1,11 @@
-import React from "react";
-import { useAppState } from "../../store/app-state";
-import Category from "./Category";
-import CategoriesWrapper from "../utilsComponents/CategoriesWrapper";
-import LinkText from "../utilsComponents/LinkText";
-import { useSpring, useTransition, animated } from "react-spring";
-import styled from "styled-components";
+import React from 'react';
+import { useAppState } from '../../store/app-state';
+import Category from './Category';
+import CategoriesWrapper from '../utilsComponents/CategoriesWrapper';
+import LinkText from '../utilsComponents/LinkText';
+import { useTransition, animated } from 'react-spring';
+import styled from 'styled-components';
+import { useFade } from '../../hooks/useFade';
 
 const FavouriteCategoryWrapper = styled(animated.div)`
   width: 20%;
@@ -42,31 +43,25 @@ export default function FavouriteCategories({ handleTabChange }) {
 }
 
 const NoItems = ({ handleTabChange }) => {
-  const fade = useSpring({
-    from: {
-      opacity: 0,
-      margin: 'auto'
-    },
-    to: {
-      opacity: 1
-    }
-  });
+  const [fade] = useFade();
   return (
-    <animated.div style={fade}>
-      <h4 style={{ flex: "1 0 100%", textAlign: "center", fontSize: "2rem" }}>
-        You dont have favourite categories yet
-      </h4>
-      <h5
-        style={{ flex: "1 0 100%", textAlign: "center", fontSize: "1.25rem" }}
-      >
-        you can add it on the{" "}
-        <LinkText
-          style={{ cursor: "pointer" }}
-          onClick={() => handleTabChange("1")}
+    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+      <animated.div style={fade}>
+        <h4 style={{ flex: '1 0 100%', textAlign: 'center', fontSize: '2rem' }}>
+          You dont have favourite categories yet
+        </h4>
+        <h5
+          style={{ flex: '1 0 100%', textAlign: 'center', fontSize: '1.25rem' }}
         >
-          All categories tab!
-        </LinkText>
-      </h5>
-    </animated.div>
+          you can add it on the{' '}
+          <LinkText
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleTabChange('1')}
+          >
+            All categories tab!
+          </LinkText>
+        </h5>
+      </animated.div>
+    </div>
   );
 };

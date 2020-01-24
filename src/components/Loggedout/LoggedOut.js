@@ -17,15 +17,15 @@ const LoggedOut = () => {
   return (
     <FlexCenter>
       <Spin spinning={submiting}>
-          <Switch>
-            <Route path="/signin">
-              <SignIn setSubmiting={setSubmiting} />
-            </Route>
-            <Route path="/signup">
-              <SignUp setSubmiting={setSubmiting} />
-            </Route>
-            <Redirect from='/' to='/signup' />
-          </Switch>
+        <Switch>
+          <Route path="/signin">
+            <SignIn setSubmiting={setSubmiting} />
+          </Route>
+          <Route path="/signup">
+            <SignUp setSubmiting={setSubmiting} />
+          </Route>
+          <Redirect from="/" to="/signup" />
+        </Switch>
       </Spin>
     </FlexCenter>
   );

@@ -3,11 +3,12 @@ import { useAppState } from '../../store/app-state';
 import { Select, Button } from 'antd';
 import Container from '../utilsComponents/Container';
 import { Link } from 'react-router-dom';
-import { useSpring, animated } from 'react-spring';
 import { useCategory } from '../../hooks/useCategory';
 import { setWarning } from '../../helpers/utils';
 import SpinnerContainer from '../utilsComponents/SpinnerContainer';
 import LinkText from '../utilsComponents/LinkText';
+import { Helmet } from 'react-helmet';
+import { useFade } from '../../hooks/useFade';
 
 const { Option } = Select;
 
@@ -16,6 +17,7 @@ export default function() {
   const [disabled, setDisabled] = useState(false);
   const [category, loading] = useCategory(game.choosedCategory);
   const [selectValue, setSelectValue] = useState('any');
+  const [fade, animated] = useFade();
   const handleChange = value => {
     setSelectValue(value);
     enouthCheker();
@@ -54,16 +56,12 @@ export default function() {
       enouthCheker();
     }
   }, [category, enouthCheker]);
-  const fade = useSpring({
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
+
   return (
     <animated.div style={fade}>
+      <Helmet>
+        <title>Trivia | Choose difficulty</title>
+      </Helmet>
       <Container style={{ position: 'relative', minHeight: 200 }}>
         <SpinnerContainer loading={loading} />
         {!loading && (

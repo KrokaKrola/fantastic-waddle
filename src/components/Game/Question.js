@@ -4,7 +4,7 @@ import { Tooltip } from 'antd';
 import { shuffle } from '../../helpers/utils';
 import { Name, NextQuestionButton } from '../utilsComponents/QuestionParts';
 import Answer from './Answer';
-
+import { Helmet } from 'react-helmet';
 export default function Question({
   question,
   setActiveQuestion,
@@ -41,6 +41,9 @@ export default function Question({
 
   return (
     <Container style={{ maxWidth: 680 }}>
+      <Helmet>
+        <title>Trivia | Game</title>
+      </Helmet>
       <Name dangerouslySetInnerHTML={{ __html: questionText }} />
       {answers.map((item, index) => (
         <Tooltip
@@ -65,7 +68,7 @@ export default function Question({
               correct: 'correct_answer',
               choosed_incorrect: 'choosed_incorrect_answer',
               incorrect: 'incorrect_answer'
-            })}  
+            })}
           />
         </Tooltip>
       ))}

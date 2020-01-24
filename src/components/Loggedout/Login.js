@@ -1,17 +1,18 @@
-import React from "react";
-import { Formik } from "formik";
-import { Button, Form } from "antd";
+import React from 'react';
+import { Formik } from 'formik';
+import { Button, Form } from 'antd';
 import {
   signInWithEmailAndPassword,
   objectLen,
   setErrors
-} from "../../helpers/utils";
-import Field, { FieldIcon } from "../utilsComponents/Field";
-import { minError, required, emailError } from "../../helpers/errorMessages";
-import * as Yup from "yup";
-import GoogleAuthButton from "./GoogleAuthButton";
-import { useSpring } from "react-spring";
-import LogoutContainer from "../utilsComponents/LogoutContainer";
+} from '../../helpers/utils';
+import Field, { FieldIcon } from '../utilsComponents/Field';
+import { minError, required, emailError } from '../../helpers/errorMessages';
+import * as Yup from 'yup';
+import GoogleAuthButton from './GoogleAuthButton';
+import { useSpring } from 'react-spring';
+import LogoutContainer from '../utilsComponents/LogoutContainer';
+import { Helmet } from 'react-helmet';
 
 const LoginForm = ({ setSubmiting }) => {
   const fade = useSpring({
@@ -43,8 +44,11 @@ const LoginForm = ({ setSubmiting }) => {
 
   return (
     <LogoutContainer style={fade}>
+      <Helmet>
+        <title>Trivia | Login</title>
+      </Helmet>
       <Formik
-        initialValues={{ loginEmail: "", loginPassword: "" }}
+        initialValues={{ loginEmail: '', loginPassword: '' }}
         validationSchema={Yup.object({
           loginEmail: Yup.string()
             .email(emailError)
@@ -80,10 +84,10 @@ const LoginForm = ({ setSubmiting }) => {
                 disabled={objectLen(formik.errors) ? true : false}
                 htmlType="submit"
                 type="primary"
-                size={"large"}
+                size={'large'}
                 block={true}
                 style={{
-                  padding: "0 40px"
+                  padding: '0 40px'
                 }}
               >
                 Log in

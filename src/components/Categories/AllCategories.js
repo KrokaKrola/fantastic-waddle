@@ -21,11 +21,13 @@ export default function AllCategories() {
   return (
     <CategoriesWrapper>
       <SpinnerContainer loading={loading} />
-      <Category
-        fav={isFav(1)}
-        key={1}
-        category={{ id: 1, name: 'Any category' }}
-      />
+      {!loading && (
+        <Category
+          fav={isFav(1)}
+          key={1}
+          category={{ id: 1, name: 'Any category' }}
+        />
+      )}
       {categories &&
         categories.map(category => (
           <Category

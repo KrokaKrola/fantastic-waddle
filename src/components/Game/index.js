@@ -41,6 +41,7 @@ export default function() {
   });
   return (
     <div style={{ position: 'relative', minHeight: 200 }}>
+
       <SpinnerContainer loading={loading} />
       <ProgressBar
         percent={(activeQuestion / questions.length) * 100}

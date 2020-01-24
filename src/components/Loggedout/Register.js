@@ -1,14 +1,14 @@
-import React from "react";
-import { Formik } from "formik";
-import { Button, Form } from "antd";
-import * as Yup from "yup";
-import GoogleAuthButton from "./GoogleAuthButton";
-import Field, { FieldIcon } from "../utilsComponents/Field";
+import React from 'react';
+import { Formik } from 'formik';
+import { Button, Form } from 'antd';
+import * as Yup from 'yup';
+import GoogleAuthButton from './GoogleAuthButton';
+import Field, { FieldIcon } from '../utilsComponents/Field';
 import {
   createUserWithEmailAndPassword,
   setErrors,
   objectLen
-} from "../../helpers/utils";
+} from '../../helpers/utils';
 import {
   maxError,
   minError,
@@ -16,9 +16,10 @@ import {
   emailError,
   urlError,
   passwordMatchError
-} from "../../helpers/errorMessages";
-import { useSpring } from "react-spring";
-import LogoutContainer from "../utilsComponents/LogoutContainer";
+} from '../../helpers/errorMessages';
+import { useSpring } from 'react-spring';
+import LogoutContainer from '../utilsComponents/LogoutContainer';
+import { Helmet } from 'react-helmet';
 
 const RegisterForm = ({ setSubmiting }) => {
   const fade = useSpring({
@@ -53,15 +54,18 @@ const RegisterForm = ({ setSubmiting }) => {
 
   return (
     <LogoutContainer style={fade}>
+      <Helmet>
+        <title>Trivia | Register</title>
+      </Helmet>
       <Formik
         initialValues={{
-          displayName: sessionStorage.getItem("displayName") || "",
-          email: sessionStorage.getItem("email") || "",
+          displayName: sessionStorage.getItem('displayName') || '',
+          email: sessionStorage.getItem('email') || '',
           photoURL:
-            sessionStorage.getItem("photoURL") ||
-            "https://placekitten.com/200/200",
-          password: sessionStorage.getItem("password") || "",
-          repeatPassword: ""
+            sessionStorage.getItem('photoURL') ||
+            'https://placekitten.com/200/200',
+          password: sessionStorage.getItem('password') || '',
+          repeatPassword: ''
         }}
         validationSchema={Yup.object({
           displayName: Yup.string()
@@ -82,7 +86,7 @@ const RegisterForm = ({ setSubmiting }) => {
             .required(required),
           repeatPassword: Yup.string()
             .nullable()
-            .oneOf([Yup.ref("password"), null], passwordMatchError)
+            .oneOf([Yup.ref('password'), null], passwordMatchError)
             .required(required)
         })}
         onSubmit={(values, { setSubmitting }) => {
@@ -137,10 +141,10 @@ const RegisterForm = ({ setSubmiting }) => {
                 disabled={objectLen(formik.errors) ? true : false}
                 htmlType="submit"
                 type="primary"
-                size={"large"}
+                size={'large'}
                 block={true}
                 style={{
-                  padding: "0 40px"
+                  padding: '0 40px'
                 }}
               >
                 Register
